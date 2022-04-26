@@ -7,6 +7,9 @@ import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -38,5 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        // "context" must be an Activity, Service or Application object from your app.
+        if (! Python.isStarted()) {
+            Python.start(new AndroidPlatform(this));
+        }
+        Python python = Python.getInstance();
+        PyObject pyObj = python.getModule("L4Python");
+        PyObject obj = pyObj.callAttr("compound_interest", 1000,10, 2);
+        TextOK.setText(obj.toString());
+
     }
 }
